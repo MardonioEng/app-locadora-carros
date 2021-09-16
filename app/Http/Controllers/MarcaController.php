@@ -58,10 +58,11 @@ class MarcaController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Marca  $marca
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|string[]
      */
     public function destroy(Marca $marca)
     {
-        //
+        $marca->delete();
+        return ["msg" => "A marca foi removida com sucesso!"];
     }
 }
