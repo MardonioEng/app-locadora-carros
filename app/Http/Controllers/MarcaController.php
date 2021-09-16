@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Marca;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Type\Integer;
 
@@ -18,11 +19,11 @@ class MarcaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): JsonResponse
     {
         //$marcas = Marca::all();
         $marcas = $this->marca->all();
-        return response($marcas);
+        return response()->json($marcas, 200);
     }
 
     /**
@@ -31,11 +32,10 @@ class MarcaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        //$marca = Marca::create($request->all());
         $marca = $this->marca->create($request->all());
-        return $marca;
+        return response()->json($marca, 201);
     }
 
     /**
@@ -44,10 +44,14 @@ class MarcaController extends Controller
      * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id): JsonResponse
     {
         $marca = $this->marca->find($id);
-        return response($marca);
+
+        if($marca === null)
+            return response()->json(['erro' => 'recurso não encontrado'], 404);
+
+        return response()->json($marca, 200);
     }
 
     /**
@@ -57,12 +61,15 @@ class MarcaController extends Controller
      * @param  Integer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): JsonResponse
     {
-        //$marca->update($request->all());
         $marca = $this->marca->find($id);
+
+        if($marca === null)
+            return response()->json(['erro' => 'recurso não encontrado'], 404);
+
         $marca->update($request->all());
-        return response($marca);
+        return response()->json($marca, 200);
     }
 
     /**
@@ -71,10 +78,14 @@ class MarcaController extends Controller
      * @param  Integer
      * @return \Illuminate\Http\Response|string[]
      */
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         $marca = $this->marca->find($id);
+
+        if($marca === null)
+            return response()->json(['erro' => 'recurso não encontrado'], 404);
+
         $marca->delete();
-        return ["msg" => "A marca foi removida com sucesso!"];
+        return response()->json(["msg" => "A marca foi removida com sucesso!"], 200);
     }
 }
