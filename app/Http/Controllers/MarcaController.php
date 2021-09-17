@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Marca;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Type\Integer;
 
 class MarcaController extends Controller
@@ -36,7 +37,14 @@ class MarcaController extends Controller
     {
         $request->validate($this->marca->rules(), $this->marca->feedback());
 
-        $marca = $this->marca->create($request->all());
+        $imagem = $request->imagem;
+        $imagem_urn = $imagem->store('imagens', 'public');
+
+        $marca = $this->marca->create([
+            'nome' => $request->nome,
+            'imagem' => $imagem_urn
+        ]);
+
         return response()->json($marca, 201);
     }
 
@@ -84,7 +92,18 @@ class MarcaController extends Controller
             $request->validate($marca->rules(), $marca->feedback());
         }
 
-        $marca->update($request->all());
+        //Remove um arquivo antigo caso um novo arquivo tenha sido enviado no request
+        if($request->file('imagem')) {
+            Storage::disk('public')->delete($marca->imagem);
+        }
+
+        $imagem = $request->imagem;
+        $imagem_urn = $imagem->store('imagens', 'public');
+
+        $marca->update([
+            'nome' => $request->nome,
+            'imagem' => $imagem_urn
+        ]);
         return response()->json($marca, 200);
     }
 
@@ -100,6 +119,10 @@ class MarcaController extends Controller
 
         if($marca === null)
             return response()->json(['erro' => 'recurso não encontrado'], 404);
+
+        //Remove um arquivo antigo caso um novo arquivo tenha sido enviado no request
+        Storage::disk('public')->delete($marca->imagem);
+
 
         $marca->delete();
         return response()->json(["msg" => "A marca foi removida com sucesso!"], 200);
