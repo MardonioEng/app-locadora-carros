@@ -31,4 +31,10 @@ class Modelo extends Model
             'abs' => 'required|boolean' // true, false, 1, 0, "1", "0"
         ];
     }
+
+    public function marca(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        //Um modelo PERTENCE a UMA marca
+        return $this->belongsTo('App\Models\Marca');
+    }
 }

@@ -22,7 +22,7 @@ class ModeloController extends Controller
      */
     public function index(): JsonResponse
     {
-        $modelos = $this->modelo->all();
+        $modelos = $this->modelo->with('marca')->get();
         return response()->json($modelos);
     }
 
@@ -60,7 +60,7 @@ class ModeloController extends Controller
      */
     public function show($id): JsonResponse
     {
-        $modelo = $this->modelo->find($id);
+        $modelo = $this->modelo->with('marca')->find($id);
 
         if($modelo === null)
             return response()->json(['erro' => 'recurso não encontrado'], 404);

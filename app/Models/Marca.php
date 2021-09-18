@@ -14,7 +14,7 @@ class Marca extends Model
         'imagem'
     ];
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'nome' => 'required|unique:marcas,nome,'.$this->id.'|min:3',
@@ -22,7 +22,7 @@ class Marca extends Model
         ];
     }
 
-    public function feedback()
+    public function feedback(): array
     {
         return [
             'required' => 'O campo :attribute é obrigatório',
@@ -30,5 +30,11 @@ class Marca extends Model
             'nome.unique' => 'O nome da marca já existe',
             'nome.min' => 'O campo nome deve ter no mínimo 3 caracteres'
         ];
+    }
+
+    public function modelos()
+    {
+        //UMA marca POSUI MUITOS modelos
+        return $this->hasMany('App\Models\Modelo');
     }
 }
