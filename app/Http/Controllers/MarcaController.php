@@ -18,11 +18,10 @@ class MarcaController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function index(): JsonResponse
     {
-        //$marcas = Marca::all();
         $marcas = $this->marca->all();
         return response()->json($marcas, 200);
     }
@@ -31,7 +30,7 @@ class MarcaController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
@@ -52,7 +51,7 @@ class MarcaController extends Controller
      * Display the specified resource.
      *
      * @param  Integer
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function show($id): JsonResponse
     {
@@ -69,7 +68,7 @@ class MarcaController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  Integer
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function update(Request $request, $id): JsonResponse
     {
@@ -111,7 +110,7 @@ class MarcaController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  Integer
-     * @return \Illuminate\Http\Response|string[]
+     * @return JsonResponse
      */
     public function destroy($id): JsonResponse
     {
