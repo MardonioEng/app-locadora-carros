@@ -99,10 +99,18 @@ class MarcaController extends Controller
         $imagem = $request->imagem;
         $imagem_urn = $imagem->store('imagens', 'public');
 
+        //Preencher o objeto $marca com os dados do $request
+        $marca->fill($request->all());
+        $marca->imagem = $imagem_urn;
+        $marca->save(); //O método save faz um update se o ID existir carso contrário, cria um novo registro
+
+        /*
         $marca->update([
             'nome' => $request->nome,
             'imagem' => $imagem_urn
         ]);
+        */
+
         return response()->json($marca, 200);
     }
 

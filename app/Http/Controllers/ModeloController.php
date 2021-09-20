@@ -102,8 +102,13 @@ class ModeloController extends Controller
         }
 
         $imagem = $request->imagem;
-        $imagem_urn = $imagem->store('imagens', 'public');
+        $imagem_urn = $imagem->store('imagens/modelos', 'public');
 
+        $modelo->fill($request->all());
+        $modelo->imagem = $imagem_urn;
+        $modelo->save();
+
+        /*
         $modelo->update([
             'marca_id' => $request->marca_id,
             'nome' => $request->nome,
@@ -113,6 +118,8 @@ class ModeloController extends Controller
             'air_bag' => $request->air_bag,
             'abs' => $request->abs
         ]);
+        */
+
         return response()->json($modelo);
     }
 
